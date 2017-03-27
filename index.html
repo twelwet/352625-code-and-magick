@@ -168,6 +168,20 @@
     <p class="setup-similar-label">Петр Петров</p>
   </div>
 </template>
-
+<script>
+  var fireballSize = 22;
+  var wizardSpeed = 3;
+  var wizardWidth = 70;
+  var left;
+  function windDirection(left) {
+    if (left === true) {
+      var getFireballSpeed = 5;
+    }
+    else {
+      var getFireballSpeed = 2;
+    }
+  }
+</script>
+<script src="js/game.js"></script>
 </body>
 </html>
