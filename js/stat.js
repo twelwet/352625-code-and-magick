@@ -1,46 +1,71 @@
-//stat.js
+// stat.js
 'use strict';
 
 window.renderStatistics = function (ctx, names, times) {
-  //Рисуем тень окна статистики
+  // Рисуем тень окна статистики
   ctx.fillStyle = 'rgba(0, 0, 0, 0.7)';
   ctx.fillRect(110, 20, 420, 270);
 
-  //Рисуем окно статистики
+  // Рисуем окно статистики
   ctx.fillStyle = 'rgb(255, 255, 255)';
   ctx.strokeRect(100, 10, 420, 270);
   ctx.fillRect(100, 10, 420, 270);
 
-  //Текст окна статистики
+  // Текст окна статистики
   ctx.fillStyle = 'rgb(0, 0, 0)';
   ctx.font = '16px PT Mono';
   ctx.fillText('Ура вы победили!', 120, 40);
   ctx.fillText('Список результатов:', 120, 60);
 
-  var max = -1; //Переменная худшего времени
-
-  //Находим худшее время, чтобы рассчитать шаг нормирования высоты гистограммы
-  for (var i = 0; i < times.length; i++) {
-    var time = times[i];
-    if (time > max) {
-      max = time;
+  // Объявляем функцию, которая ищет в массиве times[i] худшее время прохождения игры
+  var searchWorseTime = function () {
+    var max = -1;
+    for (var i = 0; i < times.length; i++) {
+      var time = times[i];
+      if (time > max) {
+        max = time;
+      }
     }
-  }
+    return max;
+  };
 
-  var histogramHeight = 150; //Задаем высоту гистограммы
-  var histogramDistanceX = 0; //Переменная смещения по горизонтали между гистограммами
-  var step = histogramHeight / max; //Рассчитываем величину шага нормирования для высот гисторгамм
+  // Задаем высоту гистограммы
+  var histogramHeight = 150;
 
+  // Рассчитываем величину шага нормирования для высот гисторгамм
+  var step = histogramHeight / searchWorseTime();
 
-  for (var i = 0; i < times.length; i++) {
-    ctx.fillStyle = 'rgba(0, 0, 255, Math.random())'; //Почему не работает Math.random() ?
+  // Объявляем функцию получения случайного цвета гисторгаммы
+  var getRandomColor = function (i) {
+    var randomTransparency = Math.random().toFixed(1);
+    ctx.fillStyle = 'rgba(0, 0, 255,' + randomTransparency + ')';
     if (names[i] === 'Вы') {
       ctx.fillStyle = 'rgb(255, 0, 0)';
     }
-    ctx.fillRect(180 + histogramDistanceX, 240, -40, -(times[i] * step)); //Рисуем гистограммы
-    ctx.fillStyle = 'rgb(0, 0, 0)'; //Задаем цвет текста
-    ctx.fillText(Math.round(times[i]), 140 + histogramDistanceX, 230 - times[i] * step); //Выводим времена игроков
-    ctx.fillText(names[i], 140 + histogramDistanceX, 260); //Выводим имена игроков
-    histogramDistanceX = histogramDistanceX + 90; //Увеличиваем шаг смещения по горизонтали между результатами
+    return ctx.fillStyle;
+  };
+
+  // Объвляем функцию отрисовки гистограммы
+  var drawHistogram = function (histogramDistanceX, i) {
+    return ctx.fillRect(180 + histogramDistanceX, 240, -40, -(times[i] * step));
+  };
+
+  // Объявляем функцию отрисовки текста гистограммы
+  var writeText = function (histogramDistanceX, i) {
+    ctx.fillStyle = 'rgb(0, 0, 0)';
+    ctx.fillText(Math.round(times[i]), 140 + histogramDistanceX, 230 - times[i] * step);
+    ctx.fillText(names[i], 140 + histogramDistanceX, 260);
+  };
+
+  // Объявляем переменную смещения гистограмм по оси Х
+  var histogramDistanceX = 0;
+
+  // Запускаем в цикле три ранее объявленные функции
+  for (var i = 0; i < times.length; i++) {
+    getRandomColor(i);
+    drawHistogram(histogramDistanceX, i);
+    writeText(histogramDistanceX, i);
+    histogramDistanceX += 90;
   }
-}
+
+};
