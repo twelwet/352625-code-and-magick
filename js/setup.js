@@ -48,23 +48,48 @@ userDialog.classList.remove('hidden');
 var similarListElement = userDialog.querySelector('.setup-similar-list');
 
 // Объявляем переменную, внутри которой находится TEMPLATE похожего персонажа
-// [ВОПРОС] Почему у TEMPLATE в отличии от DIV нужно добавлять в конце '.content'?
 var similarWizardTemplate = document.getElementById('similar-wizard-template').content;
 
-// Объявляем переменную-массив c 4 пустыми элементами
-var wizards = new Array(4);
+// Объявляем функцию генерации случайных данных
+var getRandomValue = function (x) {
+  return x[(Math.random() * (x.length - 1)).toFixed(0)];
+};
 
-// Запускаем цикл заполнения переменной-массива объектами
-for (i = 0; i < wizards.length; i++) {
-  wizards[i] = {
-    // Ключи объектов заполняются рандомными значениями из соответствующих констант
-    // [ВОПРОС] Подскажи как реализовать заполнение рандомными значениями ключей объекта с помощью функции?
-    name: WIZARD_NAMES[(Math.random() * (WIZARD_NAMES.length - 1)).toFixed(0)],
-    surname: WIZARD_SURNAMES[(Math.random() * (WIZARD_SURNAMES.length - 1)).toFixed(0)],
-    coatColor: WIZARD_COAT_COLOR[(Math.random() * (WIZARD_COAT_COLOR.length - 1)).toFixed(0)],
-    eyesColor: WIZARD_EYES_COLOR[(Math.random() * (WIZARD_EYES_COLOR.length - 1)).toFixed(0)]
-  };
-}
+// Объявляем переменную-массив, которая будет содержать четырех магов
+var wizards = [];
+
+// Объявляем переменные-объекты по количеству магов
+// [ВОПРОС] Что-то мне подсказывает, что здесь можно органичиться одной переменной,
+// например, 'wizard = {};', а далее использовать цикл, подскажешь?
+var wizard1 = {};
+var wizard2 = {};
+var wizard3 = {};
+var wizard4 = {};
+
+// [ВОПРОС] Как же здесь применить цикл?
+wizard1.name = getRandomValue(WIZARD_NAMES);
+wizard1.surname = getRandomValue(WIZARD_SURNAMES);
+wizard1.coatColor = getRandomValue(WIZARD_COAT_COLOR);
+wizard1.eyesColor = getRandomValue(WIZARD_EYES_COLOR);
+wizards.push(wizard1);
+
+wizard2.name = getRandomValue(WIZARD_NAMES);
+wizard2.surname = getRandomValue(WIZARD_SURNAMES);
+wizard2.coatColor = getRandomValue(WIZARD_COAT_COLOR);
+wizard2.eyesColor = getRandomValue(WIZARD_EYES_COLOR);
+wizards.push(wizard2);
+
+wizard3.name = getRandomValue(WIZARD_NAMES);
+wizard3.surname = getRandomValue(WIZARD_SURNAMES);
+wizard3.coatColor = getRandomValue(WIZARD_COAT_COLOR);
+wizard3.eyesColor = getRandomValue(WIZARD_EYES_COLOR);
+wizards.push(wizard3);
+
+wizard4.name = getRandomValue(WIZARD_NAMES);
+wizard4.surname = getRandomValue(WIZARD_SURNAMES);
+wizard4.coatColor = getRandomValue(WIZARD_COAT_COLOR);
+wizard4.eyesColor = getRandomValue(WIZARD_EYES_COLOR);
+wizards.push(wizard4);
 
 // Объявляем функцию создания DOM-элемента похожего персонажа
 var renderWizard = function (wizard) {
@@ -77,14 +102,15 @@ var renderWizard = function (wizard) {
 
   return wizardElement;
 };
-// Объявляем переменную, в которую потом вставим много DOM-элементов
-var fragment = document.createDocumentFragment();
-// Запускаем цикл вставки 4-х шаблонов похожих героев в переменную 'fragment'
-for (var i = 0; i < wizards.length; i++) {
-  fragment.appendChild(renderWizard(wizards[i]));
-}
-// Добавляем содержимое 'fragment' в DIV 'setup-similar-list'
-similarListElement.appendChild(fragment);
 
-// Делаем DIV с похожими героями видимым, удаляя класс 'hidden'
-userDialog.querySelector('.setup-similar').classList.remove('hidden');
+// Объявляем функцию заполнения блока DOM-элементами
+var drawAllWizards = function () {
+  var fragment = document.createDocumentFragment();
+  for (var i = 0; i < wizards.length; i++) {
+    fragment.appendChild(renderWizard(wizards[i]));
+  }
+  similarListElement.appendChild(fragment);
+  userDialog.querySelector('.setup-similar').classList.remove('hidden');
+};
+
+drawAllWizards();
