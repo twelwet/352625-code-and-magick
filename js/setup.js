@@ -37,6 +37,7 @@ var WIZARD_EYES_COLOR = [
   'yellow',
   'green'
 ];
+var WIZARD_QUANTITY = 4;
 
 // Объявляем переменную, внутри которой находится DIV всплывающего окна с настройками мага
 var userDialog = document.querySelector('.setup');
@@ -55,41 +56,19 @@ var getRandomValue = function (x) {
   return x[(Math.random() * (x.length - 1)).toFixed(0)];
 };
 
-// Объявляем переменную-массив, которая будет содержать четырех магов
-var wizards = [];
+// Объявляем переменную-массив похожих персонажей
+var wizards = new Array(WIZARD_QUANTITY);
 
-// Объявляем переменные-объекты по количеству магов
-// [ВОПРОС] Что-то мне подсказывает, что здесь можно органичиться одной переменной,
-// например, 'wizard = {};', а далее использовать цикл, подскажешь?
-var wizard1 = {};
-var wizard2 = {};
-var wizard3 = {};
-var wizard4 = {};
-
-// [ВОПРОС] Как же здесь применить цикл?
-wizard1.name = getRandomValue(WIZARD_NAMES);
-wizard1.surname = getRandomValue(WIZARD_SURNAMES);
-wizard1.coatColor = getRandomValue(WIZARD_COAT_COLOR);
-wizard1.eyesColor = getRandomValue(WIZARD_EYES_COLOR);
-wizards.push(wizard1);
-
-wizard2.name = getRandomValue(WIZARD_NAMES);
-wizard2.surname = getRandomValue(WIZARD_SURNAMES);
-wizard2.coatColor = getRandomValue(WIZARD_COAT_COLOR);
-wizard2.eyesColor = getRandomValue(WIZARD_EYES_COLOR);
-wizards.push(wizard2);
-
-wizard3.name = getRandomValue(WIZARD_NAMES);
-wizard3.surname = getRandomValue(WIZARD_SURNAMES);
-wizard3.coatColor = getRandomValue(WIZARD_COAT_COLOR);
-wizard3.eyesColor = getRandomValue(WIZARD_EYES_COLOR);
-wizards.push(wizard3);
-
-wizard4.name = getRandomValue(WIZARD_NAMES);
-wizard4.surname = getRandomValue(WIZARD_SURNAMES);
-wizard4.coatColor = getRandomValue(WIZARD_COAT_COLOR);
-wizard4.eyesColor = getRandomValue(WIZARD_EYES_COLOR);
-wizards.push(wizard4);
+// Заполняем в цикле переменную-массив похожих персонажей
+// рандомными данными из соответствующих констант
+for (var i = 0; i < wizards.length; i++) {
+  wizards[i] = {
+    name: getRandomValue(WIZARD_NAMES),
+    surname: getRandomValue(WIZARD_SURNAMES),
+    coatColor: getRandomValue(WIZARD_COAT_COLOR),
+    eyesColor: getRandomValue(WIZARD_EYES_COLOR)
+  };
+}
 
 // Объявляем функцию создания DOM-элемента похожего персонажа
 var renderWizard = function (wizard) {
@@ -106,7 +85,7 @@ var renderWizard = function (wizard) {
 // Объявляем функцию заполнения блока DOM-элементами
 var drawAllWizards = function () {
   var fragment = document.createDocumentFragment();
-  for (var i = 0; i < wizards.length; i++) {
+  for (i = 0; i < wizards.length; i++) {
     fragment.appendChild(renderWizard(wizards[i]));
   }
   similarListElement.appendChild(fragment);
