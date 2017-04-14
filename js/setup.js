@@ -55,6 +55,9 @@ var userDialogOpen = document.querySelector('.setup-open');
 // Объявляем переменую, внутри которой находится SPAN '.setup-close'
 var userDialogClose = userDialog.querySelector('.setup-close');
 
+// Объявляем переменную, внутри которой находится INPUT '.setup-user-name'
+var userDialogSetupUserName = document.querySelector('.setup-user-name');
+
 // Объявляем переменную, внутри которой находится пустой DIV списка похожих персонажей
 var similarListElement = userDialog.querySelector('.setup-similar-list');
 
@@ -63,7 +66,7 @@ var similarWizardTemplate = document.getElementById('similar-wizard-template').c
 
 // Объявляем функцию генерации случайных данных
 var getRandomValue = function (x) {
-  return x[(Math.random() * (x.length - 1)).toFixed(0)];
+  return x[Math.floor(Math.random() * x.length)];
 };
 
 // Объявляем переменную-массив похожих персонажей
@@ -148,7 +151,7 @@ userDialogClose.addEventListener('keydown', function (evt) {
 });
 
 // Остановим распространение события при нажатии на ESC, в случае фокуса на элементе '.setup-user-name'
-document.querySelector('.setup-user-name').addEventListener('keydown', function (evt) {
+userDialogSetupUserName.addEventListener('keydown', function (evt) {
   if (evt.keyCode === 27) {
     evt.stopPropagation();
   }
@@ -179,3 +182,8 @@ wizardEyes.addEventListener('click', function () {
 wizardFireball.addEventListener('click', function () {
   wizardFireball.style.background = getRandomValue(WIZARD_FIREBALL_COLOR);
 });
+
+// Проведем валидацию ввода имени персонажа
+userDialogSetupUserName.required = true;
+userDialogSetupUserName.minLength = 2;
+userDialogSetupUserName.maxLength = 50;
